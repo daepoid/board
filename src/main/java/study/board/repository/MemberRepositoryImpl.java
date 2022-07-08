@@ -19,26 +19,30 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<MemberDTO> findMemberDTOList() {
+    public List<MemberDTO> findMemberDTOs() {
         return queryFactory
                 .select(new QMemberDTO(
                         member.id,
                         member.username,
                         member.loginId,
-                        member.memberAuth))
+                        member.memberAuth,
+                        member.createdDate))
                 .from(member)
                 .fetch();
     }
 
     @Override
-    public Page<MemberDTO> findMemberDTOPage(Pageable pageable) {
+    public Page<MemberDTO> findMemberDTOs(Pageable pageable) {
         List<MemberDTO> content = queryFactory
                 .select(new QMemberDTO(
                         member.id,
                         member.username,
                         member.loginId,
-                        member.memberAuth))
+                        member.memberAuth,
+                        member.createdDate))
                 .from(member)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory

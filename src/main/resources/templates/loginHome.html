@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/header::header">
+    <title>Home</title>
+</head>
+<body>
+<!-- Navigation-->
+<div th:replace="fragments/navigation::navigation(tab='home')"></div>
+<div class="container">
+    <div class="jumbotron">
+        <p>로그인 성공</p>
+    </div>
+
+    <div th:replace="fragments/footer::footer"></div>
+</div> <!-- /container -->
+</body>
+</html>

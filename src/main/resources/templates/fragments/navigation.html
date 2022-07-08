@@ -1,0 +1,49 @@
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="navigation(tab)">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="#!" th:href="@{/}">게시판</a>
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><a class="nav-link " th:classappend="${tab == 'home'} ? active" aria-current="page" href="#!" th:href="@{/}">Home</a></li>
+                <li class="nav-item dropdown" th:classappend="${tab == 'articles'} ? active">
+                    <a class="nav-link dropdown-toggle" id="shopNavbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">게시글</a>
+                    <ul class="dropdown-menu" aria-labelledby="shopNavbarDropdown">
+                        <li><a class="dropdown-item" href="#!" th:href="@{/articles}">전체 게시글</a></li>
+                        <li><hr class="dropdown-divider"/></li>
+                        <li><a class="dropdown-item" href="#!" th:href="@{/articles/best}">추천 게시글</a></li>
+                        <li><a class="dropdown-item" href="#!" th:href="@{/articles/monthly}">월간</a></li>
+                        <li><a class="dropdown-item" href="#!" th:href="@{/articles/weekly}">주간</a></li>
+                        <li><a class="dropdown-item" href="#!" th:href="@{/articles/newly}">최근 게시글</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown" th:classappend="${tab == 'members'} ? active">
+<!--                <li class="nav-item dropdown"-->
+<!--                    sec:authorize="hasAnyRole('ROLE_CEO', 'ROLE_MANAGER')"-->
+<!--                    th:classappend="${tab == 'member'} ? active">-->
+                    <a class="nav-link dropdown-toggle" id="memberNavbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">회원 관리</a>
+                    <ul class="dropdown-menu" aria-labelledby="memberNavbarDropdown">
+                        <li><a class="dropdown-item" href="#!" th:href="@{/members}">회원 관리</a></li>
+                    </ul>
+                </li>
+
+                <form class="d-flex">
+                    <a class="btn btn-outline-dark" href="#" th:href="@{/my-info}">
+                        내 정보
+                    </a>
+                </form>
+                <form class="d-flex">
+                    <a class="btn btn-outline-dark" href="#" th:href="@{/logout}">
+                        logout
+                    </a>
+                </form>
+            </ul>
+        </div>
+    </div>
+</nav>

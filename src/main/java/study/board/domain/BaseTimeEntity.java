@@ -33,6 +33,10 @@ public class BaseTimeEntity {
         this.lastModifiedDate = createdDate;
     }
 
+    public void changeCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
     public void changeLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }

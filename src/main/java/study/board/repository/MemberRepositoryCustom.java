@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface MemberRepositoryCustom {
 
-    List<MemberDTO> findMemberDTOList();
-
-    Page<MemberDTO> findMemberDTOPage(Pageable pageable);
+    List<MemberDTO> findMemberDTOs();
+    Page<MemberDTO> findMemberDTOs(Pageable pageable);
 }

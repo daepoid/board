@@ -30,9 +30,23 @@ public class BaseEntity extends BaseTimeEntity{
         this.lastModifiedBy = uuid;
     }
 
+    public BaseEntity(String createdBy) {
+        super();
+        this.createdBy = createdBy;
+        this.lastModifiedBy = createdBy;
+    }
+
     public BaseEntity(LocalDateTime createdDate, String createdBy) {
         super(createdDate);
         this.createdBy = createdBy;
         this.lastModifiedBy = createdBy;
+    }
+
+    public void changeCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public void changeLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
     }
 }

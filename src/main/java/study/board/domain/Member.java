@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -31,12 +32,18 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private MemberAuth memberAuth;
 
+    @NotNull
+    @Column(updatable = false)
+    private LocalDateTime createdDate;
+
     @Builder
-    public Member(String username, String loginId, String password, MemberAuth memberAuth) {
+    public Member(String username, String loginId, String password,
+                  MemberAuth memberAuth, LocalDateTime createdDate) {
         this.username = username;
         this.loginId = loginId;
         this.password = password;
         this.memberAuth = memberAuth;
+        this.createdDate = createdDate;
     }
 
     public void changeUsername(String username) {
@@ -50,6 +57,8 @@ public class Member {
     public void changeMemberAuth(MemberAuth memberAuth) {
         this.memberAuth = memberAuth;
     }
+
+    public void changeCreatedDate(LocalDateTime createdDate) { this.createdDate = createdDate; }
 
     public void admitMember() {
         this.memberAuth = MemberAuth.NORMAL;

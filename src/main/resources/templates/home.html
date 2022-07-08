@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/header::header">
+    <title>Home</title>
+</head>
+<body>
+<div th:replace="fragments/navigation::navigation(tab='home')"></div>
+<div class="container">
+    <div class="jumbotron">
+        <p>
+            <a class="w-100 btn btn-lg btn-secondary" href="/login">로그인</a>
+            <!--                    <a class="btn btn-lg btn-secondary" href="/members/new">직원용 회원 가입</a>-->
+        </p>
+    </div>
+    <div th:replace="fragments/footer::footer"></div>
+</div> <!-- /container -->
+</body>
+</html>

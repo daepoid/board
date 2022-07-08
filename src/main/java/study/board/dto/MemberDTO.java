@@ -7,6 +7,7 @@ import study.board.domain.MemberAuth;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Getter @Setter
 @ToString
@@ -25,12 +26,16 @@ public class MemberDTO {
     @NotNull
     private MemberAuth memberAuth;
 
+    @NotNull
+    private LocalDateTime createdDate;
+
     @QueryProjection
-    public MemberDTO(Long id, String username, String loginId, MemberAuth memberAuth) {
+    public MemberDTO(Long id, String username, String loginId, MemberAuth memberAuth, LocalDateTime createdDate) {
         this.id = id;
         this.username = username;
         this.loginId = loginId;
         this.memberAuth = memberAuth;
+        this.createdDate = createdDate;
     }
 
     @QueryProjection
@@ -40,11 +45,13 @@ public class MemberDTO {
             this.username = null;
             this.loginId = null;
             this.memberAuth = MemberAuth.UNDEFINED;
+            this.createdDate = LocalDateTime.now();
         } else {
             this.id = member.getId();
             this.username = member.getUsername();
             this.loginId = member.getLoginId();
             this.memberAuth = member.getMemberAuth();
+            this.createdDate = member.getCreatedDate();
         }
     }
 }

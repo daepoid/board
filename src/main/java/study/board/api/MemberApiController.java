@@ -27,12 +27,12 @@ public class MemberApiController {
 
     @GetMapping("/v2/members")
     public List<MemberDTO> memberDTOList() {
-        return memberRepository.findMemberDTOList();
+        return memberRepository.findMemberDTOs();
     }
 
     @GetMapping("/v3/members")
     public Page<MemberDTO> memberDTOPage(Pageable pageable) {
-        return memberRepository.findMemberDTOPage(pageable);
+        return memberRepository.findMemberDTOs(pageable);
     }
 
     @PostMapping("/v1/members")

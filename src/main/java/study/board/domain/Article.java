@@ -1,14 +1,19 @@
 package study.board.domain;
 
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import java.time.LocalDateTime;
 
+@Slf4j
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(of = {"id", "title", "content", "imgUrl", "stars", "views", "createdBy", "lastModifiedBy", "createdDate", "lastModifiedDate"})
 public class Article extends BaseEntity {
 
     @Id
@@ -21,6 +26,9 @@ public class Article extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @NotBlank
+    private String title;
+
     @Lob
     @NotBlank
     private String content;
@@ -28,11 +36,31 @@ public class Article extends BaseEntity {
     @Lob
     private String imgUrl;
 
+    @PositiveOrZero
+    private Long stars = 0L;
+
+    @PositiveOrZero
+    private Long views = 0L;
+
     @Builder
-    public Article(Member member, String content, String imgUrl) {
+    public Article(Member member, String title, String content, String imgUrl, Long stars, Long views) {
         this.member = member;
+        this.title = title;
         this.content = content;
         this.imgUrl = imgUrl;
+        this.stars = stars;
+        this.views = views;
+
+        this.changeCreatedBy(member.getLoginId());
+        this.changeLastModifiedBy(member.getLoginId());
+
+        LocalDateTime now = LocalDateTime.now();
+        this.changeCreatedDate(now);
+        this.changeLastModifiedDate(now);
+    }
+
+    public void changeTitle(String title) {
+        this.title = title;
     }
 
     public void changeContent(String content) {
@@ -43,4 +71,15 @@ public class Article extends BaseEntity {
         this.imgUrl = imgUrl;
     }
 
+    public void addStars() {
+        log.info("Test addStars() = {}", this.stars);
+        this.stars++;
+        log.info("Test addStars() = {}", this.stars);
+    }
+
+    public void addViews() {
+        log.info("Test addViews() = {}", this.views);
+        this.views++;
+        log.info("Test addViews() = {}", this.views);
+    }
 }
