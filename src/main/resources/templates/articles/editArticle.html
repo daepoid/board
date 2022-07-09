@@ -1,10 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/header::header">
+    <title>글 수정</title>
 </head>
+<div th:replace="fragments/navigation::navigation(tab='articles')"></div>
 <body>
-
+<div class="container">
+    <form th:object="${articleDTO}" method="get">
+        <div class="form-group">
+            <label for="articleId">번호</label>
+            <input type="text" id="articleId" th:field="*{id}" readonly
+                   class="form-control" th:errorclass="field-error" >
+            <div class="field-error" th:errors="*{id}"></div>
+        </div>
+        <div class="form-group">
+            <label for="articleTitle">제목</label>
+            <input type="text" id="articleTitle" th:field="*{title}" readonly
+                   class="form-control" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{title}"></div>
+        </div>
+        <div class="form-group">
+            <label for="articleContent">내용</label>
+            <textarea id="articleContent" th:field="*{content}"
+                      cols="50" rows="30" readonly
+                      class="form-control" th:errorclass="field-error">
+            </textarea>
+            <div class="field-error" th:errors="*{content}"></div>
+        </div>
+        <div class="form-group">
+            <label for="createdBy">작성자</label>
+            <input type="text" id="createdBy" th:field="*{createdBy}" readonly
+                   class="form-control" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{createdBy}"></div>
+        </div>
+        <div class="form-group">
+            <label for="createdDate">작성일</label>
+            <input type="text" id="createdDate" th:field="*{createdDate}" readonly
+                   class="form-control" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{createdDate}"></div>
+        </div>
+        <div class="form-group">
+            <label for="lastModifiedDate">수정일</label>
+            <input type="text" id="lastModifiedDate" th:field="*{lastModifiedDate}" readonly
+                   class="form-control" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{lastModifiedDate}"></div>
+        </div>
+        <div class="form-group">
+            <label for="views">조회수</label>
+            <input type="text" id="views" th:field="*{views}" readonly
+                   class="form-control" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{views}"></div>
+        </div>
+        <div class="form-group">
+            <label for="stars">추천수</label>
+            <input type="text" id="stars" th:field="*{stars}" readonly
+                   class="form-control" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{stars}"></div>
+        </div>
+        <p></p>
+    </form>
+</div> <!-- /container -->
 </body>
+<div th:replace="fragments/footer::footer"></div>
 </html>

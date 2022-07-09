@@ -32,14 +32,19 @@ public class InitData {
         @Transactional
         public void init() {
             for(int i = 1; i <= 100; i++) {
-                Member member = Member.builder()
+                MemberAuth memberAuth = switch (i) {
+                    case 1 -> MemberAuth.ADMINISTRATOR;
+                    case 2 -> MemberAuth.MANAGER;
+                    case 3 -> MemberAuth.UNDEFINED;
+                    default -> MemberAuth.NORMAL;
+                };
+                em.persist(Member.builder()
                         .username("username" + i)
                         .loginId("loginId" + i)
                         .password("123")
-                        .memberAuth(MemberAuth.NORMAL)
+                        .memberAuth(memberAuth)
                         .createdDate(LocalDateTime.now())
-                        .build();
-                em.persist(member);
+                        .build());
             }
         }
     }

@@ -37,33 +37,33 @@
         <ul class="pagination">
             <!--        처음 페이지로 가기-->
             <li>
-                <a th:href="@{/articles}" aria-label="First">
+                <a th:href="@{/articles/weekly}" aria-label="First">
                     <span aria-hidden="true">First</span>
                 </a>
             </li>
 
             <!--        이전 페이지로 가기-->
             <li th:class="${articleDTOs.first} ? 'disabled'">
-                <a th:href="${articleDTOs.first} ? '#' : @{/articles(page=${articleDTOs.number - 1})}" aria-label="Previous">
+                <a th:href="${articleDTOs.first} ? '#' : @{/articles/weekly(page=${articleDTOs.number - 1})}" aria-label="Previous">
                     <span aria-hidden="true">&lt;</span>
                 </a>
             </li>
 
             <!--        현재 페이지 그룹-->
             <li th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == articleDTOs.number} ? 'active'">
-                <a th:text="${page}" th:href="@{/articles(page=${page - 1})}"></a>
+                <a th:text="${page}" th:href="@{/articles/weekly(page=${page - 1})}"></a>
             </li>
 
             <!--        다음 페이지로 가기-->
             <li th:class="${articleDTOs.last} ? 'disabled'">
-                <a th:href="${articleDTOs.last} ? '#' : @{/articles(page=${articleDTOs.number + 1})}" aria-label="Next">
+                <a th:href="${articleDTOs.last} ? '#' : @{/articles/weekly(page=${articleDTOs.number + 1})}" aria-label="Next">
                     <span aria-hidden="true">&gt;</span>
                 </a>
             </li>
 
             <!--        마지막 페이지로 가기-->
             <li>
-                <a th:href="@{/articles(page=${articleDTOs.totalPages - 1})}" aria-label="Last">
+                <a th:href="@{/articles/weekly(page=${articleDTOs.totalPages})}" aria-label="Last">
                     <span aria-hidden="true">Last</span>
                 </a>
             </li>

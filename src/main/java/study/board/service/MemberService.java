@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.board.domain.Member;
 import study.board.dto.MemberDTO;
+import study.board.dto.MemberUpdatableDTO;
 import study.board.repository.MemberRepository;
 
 import java.util.List;
@@ -33,8 +34,22 @@ public class MemberService {
         return memberRepository.findByLoginId(loginId);
     }
 
+    public Optional<MemberDTO> findMemberDTOById(Long memberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        if(member.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(new MemberDTO(member.get()));
+        }
+    }
+
     public Optional<MemberDTO> findMemberDTOByLoginId(String loginId) {
-        return Optional.of(new MemberDTO(memberRepository.findByLoginId(loginId).orElse(null)));
+        Optional<Member> member = memberRepository.findByLoginId(loginId);
+        if(member.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(new MemberDTO(member.get()));
+        }
     }
 
     public List<MemberDTO> findMemberDTOs() {
@@ -43,5 +58,11 @@ public class MemberService {
 
     public Page<MemberDTO> findMemberDTOs(Pageable pageable) {
         return memberRepository.findMemberDTOs(pageable);
+    }
+
+    @Transactional
+    public void editMemberInfo(MemberUpdatableDTO memberUpdatableDTO) {
+        Optional<Member> member = memberRepository.findById(memberUpdatableDTO.getId());
+        member.ifPresent(value -> value.changeUsername(memberUpdatableDTO.getUsername()));
     }
 }

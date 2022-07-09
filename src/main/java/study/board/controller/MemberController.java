@@ -7,11 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import study.board.dto.MemberDTO;
 import study.board.service.MemberService;
 
-import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -32,5 +33,15 @@ public class MemberController {
         model.addAttribute("start", start);
         model.addAttribute("last", last);
         return "members/memberList";
+    }
+
+    @GetMapping("/{loginId}")
+    public String memberInfoByManager(@PathVariable("loginId") Long memberId, Model model) {
+        Optional<MemberDTO> memberDTO = memberService.findMemberDTOById(memberId);
+        if(memberDTO.isEmpty()) {
+            return "redirect:/";
+        }
+        model.addAttribute("memberDTO", memberDTO.get());
+        return "members/memberInfo";
     }
 }
