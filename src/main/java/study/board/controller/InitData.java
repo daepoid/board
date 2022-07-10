@@ -2,7 +2,9 @@ package study.board.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.hibernate.type.LocalDateTimeType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import study.board.domain.Article;
@@ -25,9 +27,12 @@ public class InitData {
     }
 
     @Component
+    @RequiredArgsConstructor
     static class InitMemberService {
         @PersistenceContext
         private EntityManager em;
+
+        private final PasswordEncoder passwordEncoder;
 
         @Transactional
         public void init() {
@@ -38,10 +43,11 @@ public class InitData {
                     case 3 -> MemberAuth.UNDEFINED;
                     default -> MemberAuth.NORMAL;
                 };
+
                 em.persist(Member.builder()
                         .username("username" + i)
                         .loginId("loginId" + i)
-                        .password("123")
+                        .password(passwordEncoder.encode("123"))
                         .memberAuth(memberAuth)
                         .createdDate(LocalDateTime.now())
                         .build());

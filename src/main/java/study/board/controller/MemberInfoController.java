@@ -92,5 +92,4 @@ public class MemberInfoController {
         memberService.editMemberInfo(memberUpdatableDTO);
         return "redirect:/my-info";
     }
-
 }

@@ -26,23 +26,7 @@ public class LoginController {
     private final MemberRepository memberRepository;
 
     @GetMapping("/login")
-    public String loginPage(@ModelAttribute("loginDTO") LoginDTO loginDTO,
-                            HttpServletRequest request) {
-        request.getSession();
+    public String loginPage(@ModelAttribute("loginDTO") LoginDTO loginDTO) {
         return "loginPage";
-    }
-
-    @PostMapping("/login")
-    public String loginMember(@Valid @ModelAttribute("loginDTO") LoginDTO loginDTO,
-                              HttpServletRequest request) {
-        Optional<Member> member = memberRepository.findByLoginId(loginDTO.getLoginId());
-        if(member.isEmpty() || !member.get().getPassword().equals(loginDTO.getPassword())) {
-            log.info("로그인 실패");
-            return "redirect:/login";
-        }
-
-        log.info("로그인 성공 {}", loginDTO.getLoginId());
-        request.getSession(false).setAttribute(LOGIN_MEMBER, loginDTO.getLoginId());
-        return "redirect:/";
     }
 }

@@ -26,8 +26,6 @@ public class HomeController {
     public String mainRootPage(Model model, HttpServletRequest request) {
         if(request.getSession(false) == null) {
             request.getSession();
-            log.info("로그인 실패 - 세션 없음");
-            return "home";
         }
         String loginId = (String) request.getSession(false).getAttribute(LOGIN_MEMBER);
         if(loginId == null) {
@@ -43,6 +41,5 @@ public class HomeController {
         log.info("로그인 성공");
         model.addAttribute("memberId", member.get().getId());
         return "loginHome";
-//        return "index";
     }
 }
