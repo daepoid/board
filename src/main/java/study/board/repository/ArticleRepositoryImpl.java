@@ -14,6 +14,7 @@ import study.board.dto.QArticleDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static study.board.domain.QArticle.*;
 
@@ -21,6 +22,16 @@ import static study.board.domain.QArticle.*;
 public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+
+    @Override
+    public Optional<ArticleDTO> findArticleDTO(Long articleDTO) {
+        return Optional.ofNullable(
+                queryFactory
+                        .select(new QArticleDTO(article))
+                        .from(article)
+                        .where(article.id.eq(articleDTO))
+                        .fetchOne());
+    }
 
     @Override
     public List<ArticleDTO> findArticleDTOs() {

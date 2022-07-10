@@ -43,7 +43,8 @@ public class Article extends BaseEntity {
     private Long views = 0L;
 
     @Builder
-    public Article(Member member, String title, String content, String imgUrl, Long stars, Long views) {
+    public Article(Member member, String title, String content,
+                   String imgUrl, Long stars, Long views) {
         this.member = member;
         this.title = title;
         this.content = content;

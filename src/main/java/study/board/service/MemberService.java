@@ -34,7 +34,7 @@ public class MemberService {
         return memberRepository.findByLoginId(loginId);
     }
 
-    public Optional<MemberDTO> findMemberDTOById(Long memberId) {
+    public Optional<MemberDTO> findMemberDTO(Long memberId) {
         Optional<Member> member = memberRepository.findById(memberId);
         if(member.isEmpty()) {
             return Optional.empty();
@@ -64,5 +64,22 @@ public class MemberService {
     public void editMemberInfo(MemberUpdatableDTO memberUpdatableDTO) {
         Optional<Member> member = memberRepository.findById(memberUpdatableDTO.getId());
         member.ifPresent(value -> value.changeUsername(memberUpdatableDTO.getUsername()));
+    }
+
+    @Transactional
+    public void updateMember(Long memberId, MemberUpdatableDTO memberUpdatableDTO) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        if(member.isEmpty()) {
+            return;
+        }
+
+        String newUsername = memberUpdatableDTO.getUsername();
+        member.get().changeUsername(newUsername.isBlank() ? member.get().getUsername() : newUsername);
+    }
+
+    @Transactional
+    public void deleteMember(Long memberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        member.ifPresent(memberRepository::delete);
     }
 }

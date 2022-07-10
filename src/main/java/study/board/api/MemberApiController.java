@@ -1,86 +1,76 @@
 package study.board.api;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import study.board.domain.Member;
 import study.board.domain.MemberAuth;
+import study.board.dto.CreateMemberDTO;
 import study.board.dto.MemberDTO;
-import study.board.repository.MemberRepository;
+import study.board.dto.MemberUpdatableDTO;
+import study.board.service.MemberService;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RestController
+@Api(tags = {"사용자 정보 API"})
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class MemberApiController {
 
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/v1/members")
-    public List<Member> memberList() {
-        return memberRepository.findAll();
+    @ApiOperation(value = "전체 사용자 페이징 조회", notes = "전체 고객을 페이징 처리하여 페이지 타입으로 반환")
+    public Page<MemberDTO> findMembersV1(Pageable pageable) {
+        return memberService.findMemberDTOs(pageable);
     }
 
-    @GetMapping("/v2/members")
-    public List<MemberDTO> memberDTOList() {
-        return memberRepository.findMemberDTOs();
-    }
+    @PostMapping("/v1/members/new")
+    @ApiOperation(value = "사용자 생성", notes = "고객을 생성하고 아이디를 반환")
+    public Long createMemberV1(@RequestBody @Valid CreateMemberDTO createMemberDTO) {
 
-    @GetMapping("/v3/members")
-    public Page<MemberDTO> memberDTOPage(Pageable pageable) {
-        return memberRepository.findMemberDTOs(pageable);
-    }
+        // 아이디 검증
 
-    @PostMapping("/v1/members")
-    public Long createMember(@RequestBody @Valid MemberDTO memberDTO) {
+        // 비밀번호 검증
+
         Member member = Member.builder()
-                .username(memberDTO.getUsername())
-                .loginId(memberDTO.getLoginId())
-                .memberAuth(memberDTO.getMemberAuth())
-                .password("123")
+                .username(createMemberDTO.getUsername())
+                .loginId(createMemberDTO.getLoginId())
+                .password(passwordEncoder.encode(createMemberDTO.getPassword()))
+                .memberAuth(MemberAuth.NORMAL)
                 .build();
 
-        memberRepository.save(member);
+        memberService.save(member);
         return member.getId();
     }
 
     @GetMapping("/v1/members/{memberId}")
-    public Member findMemberById(@PathVariable("memberId") Long memberId) {
-        Optional<Member> member = memberRepository.findById(memberId);
-        return member.orElse(null);
-    }
-
-    @GetMapping("/v2/members/{memberId}")
-    public MemberDTO findMemberDTOById(@PathVariable("memberId") Long memberId) {
-        Optional<Member> member = memberRepository.findById(memberId);
-        return new MemberDTO(member.orElse(null));
+    @ApiOperation(value = "사용자 조회", notes = "사용자를 조회하여 사용자 정보를 반환")
+    public MemberDTO findMemberV1(@PathVariable("memberId") Long memberId) {
+        return memberService.findMemberDTO(memberId).orElse(null);
     }
 
     @PostMapping("/v1/members/{memberId}")
+    @ApiOperation(value = "사용자 정보 수정", notes = "사용자 정보를 수정하고 아이디를 반환")
     public Long updateMember(@PathVariable("memberId") Long memberId,
-                             @RequestParam("username") String username,
-                             @RequestParam("memberAuth") MemberAuth memberAuth) {
-        Optional<Member> member = memberRepository.findById(memberId);
-        if(member.isEmpty()) {
-            return -1L;
-        }
-
-        member.get().changeUsername(username);
-        member.get().changeMemberAuth(memberAuth);
+                             @RequestBody MemberUpdatableDTO memberUpdatableDTO) {
+        memberService.updateMember(memberId, memberUpdatableDTO);
         return memberId;
     }
 
     @DeleteMapping("/v1/members/{memberId}")
+    @ApiOperation(value = "사용자 정보 삭제", notes = "사용자를 삭제하고 아이디를 반환")
     public Long deleteMember(@PathVariable("memberId") Long memberId) {
-        Optional<Member> member = memberRepository.findById(memberId);
-        if(member.isEmpty()) {
-            return -1L;
-        }
-        memberRepository.delete(member.get());
+        memberService.deleteMember(memberId);
         return memberId;
     }
 }

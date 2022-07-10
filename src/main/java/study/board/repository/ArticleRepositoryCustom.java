@@ -5,9 +5,11 @@ import org.springframework.data.domain.Pageable;
 import study.board.dto.ArticleDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ArticleRepositoryCustom {
 
+    Optional<ArticleDTO> findArticleDTO(Long articleId);
     List<ArticleDTO> findArticleDTOs();
     Page<ArticleDTO> findArticleDTOs(Pageable pageable);
     Page<ArticleDTO> findAllOrderByCreatedDate(Pageable pageable);

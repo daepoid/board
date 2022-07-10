@@ -37,7 +37,7 @@ public class MemberController {
 
     @GetMapping("/{loginId}")
     public String memberInfoByManager(@PathVariable("loginId") Long memberId, Model model) {
-        Optional<MemberDTO> memberDTO = memberService.findMemberDTOById(memberId);
+        Optional<MemberDTO> memberDTO = memberService.findMemberDTO(memberId);
         if(memberDTO.isEmpty()) {
             return "redirect:/";
         }

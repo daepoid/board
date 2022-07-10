@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import study.board.dto.ArticleDTO;
 import study.board.service.ArticleService;
 
-import java.util.List;
-
 import static study.board.ArticleConst.*;
 
 @Slf4j
@@ -25,7 +23,7 @@ public class ArticleListController {
 
     @GetMapping("")
     public String articleListV2(Model model, Pageable pageable) {
-        Page<ArticleDTO> articleDTOs = articleService.findArticleDTOS(pageable);
+        Page<ArticleDTO> articleDTOs = articleService.findArticleDTOs(pageable);
         model.addAttribute("articleDTOs", articleDTOs);
 
         //        double start = Math.floor(memberDTOs.getNumber() / 5) * 5 + 1;

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.board.domain.Article;
 import study.board.dto.ArticleDTO;
+import study.board.dto.ArticleUpdatableDTO;
 import study.board.repository.ArticleRepository;
-import study.board.repository.MemberRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +19,6 @@ import java.util.Optional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-    private final MemberRepository memberRepository;
 
     @Transactional
     public Long save(Article article) {
@@ -27,15 +26,19 @@ public class ArticleService {
         return article.getId();
     }
 
-    public Optional<Article> findById(Long id) {
-        return articleRepository.findById(id);
+    public Optional<Article> findById(Long articleId) {
+        return articleRepository.findById(articleId);
+    }
+
+    public Optional<ArticleDTO> findArticleDTO(Long articleId) {
+        return articleRepository.findArticleDTO(articleId);
     }
 
     public List<ArticleDTO> findArticleDTOs() {
         return articleRepository.findArticleDTOs();
     }
 
-    public Page<ArticleDTO> findArticleDTOS(Pageable pageable) {
+    public Page<ArticleDTO> findArticleDTOs(Pageable pageable) {
         return articleRepository.findArticleDTOs(pageable);
     }
 
@@ -71,5 +74,27 @@ public class ArticleService {
     public void addViews(Long articleId) {
         Optional<Article> article = articleRepository.findById(articleId);
         article.ifPresent(Article::addViews);
+    }
+
+    @Transactional
+    public void updateArticle(Long articleId, ArticleUpdatableDTO articleUpdatableDTO) {
+        Optional<Article> article = articleRepository.findById(articleId);
+        if(article.isEmpty()) {
+            return;
+        }
+
+        String newTitle = articleUpdatableDTO.getTitle();
+        String newContent = articleUpdatableDTO.getContent();
+        String newImgUrl = articleUpdatableDTO.getImgUrl();
+
+        article.get().changeTitle(newTitle.isBlank() ? article.get().getTitle() : newTitle);
+        article.get().changeTitle(newContent.isBlank() ? article.get().getTitle() : newContent);
+        article.get().changeTitle(newImgUrl.isBlank() ? article.get().getTitle() : newImgUrl);
+    }
+
+    @Transactional
+    public void deleteArticle(Long articleId) {
+        Optional<Article> article = articleRepository.findById(articleId);
+        article.ifPresent(articleRepository::delete);
     }
 }
