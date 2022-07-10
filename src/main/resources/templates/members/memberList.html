@@ -33,43 +33,43 @@
             </tbody>
         </table>
     </div>
+    <nav style="text-align: center">
+        <ul class="pagination justify-content-center">
+            <!--        처음 페이지로 가기-->
+            <li>
+                <a class="page-link" th:href="@{/members}" aria-label="First">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <!--        이전 페이지로 가기-->
+            <li th:class="${memberDTOs.first} ? 'disabled'">
+                <a class="page-link" th:href="${memberDTOs.first} ? '#' : @{/members(page=${memberDTOs.number - 1})}" aria-label="Previous">
+                    <span aria-hidden="true">&lt;</span>
+                </a>
+            </li>
+
+            <!--        현재 페이지 그룹-->
+            <li th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == memberDTOs.number} ? 'active'">
+                <a class="page-link" th:text="${page}" th:href="@{/members(page=${page - 1})}"></a>
+            </li>
+
+            <!--        다음 페이지로 가기-->
+            <li th:class="${memberDTOs.last} ? 'disabled'">
+                <a class="page-link" th:href="${memberDTOs.last} ? '#' : @{/members(page=${memberDTOs.number + 1})}" aria-label="Next">
+                    <span aria-hidden="true">&gt;</span>
+                </a>
+            </li>
+
+            <!--        마지막 페이지로 가기-->
+            <li>
+                <a class="page-link" th:href="@{/members(page=${memberDTOs.totalPages - 1})}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </div> <!-- /container -->
 </body>
-<nav>
-    <ul class="pagination">
-        <!--        처음 페이지로 가기-->
-        <li>
-            <a class="page-link" th:href="@{/members}" aria-label="First">
-                <span aria-hidden="true">First</span>
-            </a>
-        </li>
-
-        <!--        이전 페이지로 가기-->
-        <li th:class="${memberDTOs.first} ? 'disabled'">
-            <a class="page-link" th:href="${memberDTOs.first} ? '#' : @{/members(page=${memberDTOs.number - 1})}" aria-label="Previous">
-                <span aria-hidden="true">&lt;</span>
-            </a>
-        </li>
-
-        <!--        현재 페이지 그룹-->
-        <li th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == memberDTOs.number} ? 'active'">
-            <a class="page-link" th:text="${page}" th:href="@{/members(page=${page - 1})}"></a>
-        </li>
-
-        <!--        다음 페이지로 가기-->
-        <li th:class="${memberDTOs.last} ? 'disabled'">
-            <a class="page-link" th:href="${memberDTOs.last} ? '#' : @{/members(page=${memberDTOs.number + 1})}" aria-label="Next">
-                <span aria-hidden="true">&gt;</span>
-            </a>
-        </li>
-
-        <!--        마지막 페이지로 가기-->
-        <li>
-            <a class="page-link" th:href="@{/members(page=${memberDTOs.totalPages - 1})}" aria-label="Last">
-                <span aria-hidden="true">Last</span>
-            </a>
-        </li>
-    </ul>
-</nav>
 <div th:replace="fragments/footer::footer"></div>
 </html>
