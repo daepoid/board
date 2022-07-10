@@ -8,6 +8,7 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import java.util.UUID;
 import static study.board.SessionConst.*;
 
 @EnableJpaAuditing // Auditing 사용시에 꼭 필요
+@EnableSwagger2
 @SpringBootApplication
 public class BoardApplication {
 
