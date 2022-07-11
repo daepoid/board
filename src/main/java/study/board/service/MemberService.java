@@ -84,7 +84,8 @@ public class MemberService {
     }
 
     public boolean validateLoginId(String loginId) {
-        return loginId.matches("^\\w{8,20}$");
+        Optional<Member> member = memberRepository.findByLoginId(loginId);
+        return member.isEmpty() && loginId.matches("^\\w{8,20}$");
     }
 
     public boolean validatePassword(String password) {

@@ -177,6 +177,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         List<ArticleDTO> content = queryFactory
                 .select(new QArticleDTO(article))
                 .from(article)
+                .orderBy(article.createdDate.desc())
                 .where(article.createdDate.after(now.minusDays(days)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
