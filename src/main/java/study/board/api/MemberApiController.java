@@ -16,6 +16,7 @@ import study.board.dto.MemberUpdatableDTO;
 import study.board.service.MemberService;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Slf4j
@@ -39,14 +40,23 @@ public class MemberApiController {
     public Long createMemberV1(@RequestBody @Valid CreateMemberDTO createMemberDTO) {
 
         // 아이디 검증
+        if(!memberService.validateLoginId(createMemberDTO.getLoginId())) {
+            log.info("아이디 검증 실패 = {}", createMemberDTO.getLoginId());
+            return -1L;
+        }
 
         // 비밀번호 검증
+        if(!memberService.validatePassword(createMemberDTO.getPassword())) {
+            log.info("비밀번호 검증 실패 = {}", createMemberDTO.getPassword());
+            return -1L;
+        }
 
         Member member = Member.builder()
                 .username(createMemberDTO.getUsername())
                 .loginId(createMemberDTO.getLoginId())
                 .password(passwordEncoder.encode(createMemberDTO.getPassword()))
                 .memberAuth(MemberAuth.NORMAL)
+                .createdDate(LocalDateTime.now())
                 .build();
 
         memberService.save(member);

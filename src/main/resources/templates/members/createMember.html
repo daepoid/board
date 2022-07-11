@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/header::header">
+    <title>회원 가입</title>
+</head>
+<div th:replace="fragments/navigation::navigation(tab='articles')"></div>
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>회원 가입</h2>
+    </div>
+    <h4 class="mb-3">회원 정보 입력</h4>
+    <form action="" th:action th:object="${createMemberDTO}" method="post">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+               th:text="${err}">전체 오류 메시지</p>
+        </div>
+        <div>
+            <div>
+                <label for="loginId">로그인 ID</label>
+                <input type="text" id="loginId" th:field="*{loginId}"
+                       class="form-control" th:errorclass="field-error">
+                <div class="field-error" th:errors="*{loginId}"></div>
+            </div>
+<!--            <div>-->
+<!--                <button class="idCheck" type="button" id="idCheck" onclick="fn_idCheck();" value="N">중복 확인</button>-->
+<!--            </div>-->
+        </div>
+        <div>
+            <div>
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" th:field="*{password}"
+                       class="form-control" th:errorclass="field-error">
+                <div class="field-error" th:errors="*{password}"></div>
+            </div>
+            <div>
+                <label for="passwordCheck">비밀번호 확인</label>
+                <input type="password" id="passwordCheck" th:field="*{passwordCheck}"
+                       class="form-control" th:errorclass="field-error">
+                <div class="field-error" th:errors="*{passwordCheck}"></div>
+            </div>
+<!--            <div>-->
+<!--                <button class="pwCheck" type="button" id="pwCheck" onclick="fn_pwCheck();" value="N">비밀번호 확인</button>-->
+<!--            </div>-->
+        </div>
+        <div>
+            <div>
+                <label for="name">이름</label>
+                <input type="text" id="name" th:field="*{username}"
+                       class="form-control" th:errorclass="field-error">
+                <div class="field-error" th:errors="*{username}"></div>
+            </div>
+        </div>
+<!--        <div>-->
+<!--            <div>-->
+<!--                <label for="phoneNumber">전화번호</label>-->
+<!--                <input type="text" id="phoneNumber" th:field="*{phoneNumber}"-->
+<!--                       class="form-control" th:errorclass="field-error">-->
+<!--                <div class="field-error" th:errors="*{phoneNumber}"></div>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <button class="phoneCheck" type="button" id="phoneCheck" onclick="fn_phoneCheck();" value="N">전화번호 확인</button>-->
+<!--            </div>-->
+<!--        </div>-->
+        <hr class="my-4">
+        <div class="row">
+            <button class="btn btn-large btn-primary"
+                    type="submit">회원 가입</button>
+            <button class="btn btn-large btn-secondary"
+                    onclick="location.href='home.html'"
+                    th:onclick="|location.href='@{/}'|"
+                    type="button">취소</button>
+        </div>
+    </form>
+</div> <!-- /container -->
+</body>
+<script>
+    function fn_idCheck() {
+        $.ajax({
+            url: "/members/new/id-check",
+            type: "POST",
+            dataType: "JSON",
+            data: {"loginId" : $("#loginId").val()},
+            success: function(data) {
+                if(data) {
+                    $("#idCheck").attr("value", "Y")
+                    alert("사용 가능한 아이디입니다.");
+                } else {
+                    alert("중복된 아이디입니다.");
+                }
+            }
+        })
+    }
+</script>
+<script>
+    function fn_pwCheck() {
+        $.ajax({
+            url: "/members/new/password-check",
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                "password": $("#password").val(),
+                "passwordCheck": $("#passwordCheck").val()
+            },
+            success: function(data) {
+                if(data) {
+                    $("#pwCheck").attr("value", "Y")
+                    alert("비밀번호가 일치합니다.");
+                } else {
+                    alert("비밀번호가 올바르지 않습니다.");
+                }
+            }
+        })
+    }
+</script>
+<!--<script>-->
+<!--    function fn_phoneCheck() {-->
+<!--        $.ajax({-->
+<!--            url: "/members/new/phone-check",-->
+<!--            type: "POST",-->
+<!--            dataType: "JSON",-->
+<!--            data: {"phoneNumber": $("#phoneNumber").val()},-->
+<!--            success: function(data) {-->
+<!--                if(data) {-->
+<!--                    $("#phoneCheck").attr("value", "Y")-->
+<!--                    alert("올바른 전화번호입니다.");-->
+<!--                } else {-->
+<!--                    alert("전화번호가 올바르지 않습니다.");-->
+<!--                }-->
+<!--            }-->
+<!--        })-->
+<!--    }-->
+<!--</script>-->
+<div th:replace="fragments/footer::footer"></div>
+</html>

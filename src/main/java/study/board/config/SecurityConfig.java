@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -33,12 +34,13 @@ public class SecurityConfig {
                 .csrf().disable()
                 .headers().frameOptions().disable().and()
                 .authorizeRequests()
-                    .antMatchers("/", "/css/**", "/js/**", "/images/**", "/img/**", "/*.ico", "/error/**", "/static/**").permitAll()
+//                    .antMatchers(
+//                            "/", "/css/**", "/js/**", "/images/**", "/img/**",
+//                            "/*.ico", "/error/**", "/static/**").permitAll()
+                    .antMatchers("/login", "/members/new", "/members/new/**").permitAll()
                     .antMatchers(
-                            "/login",
                             "/articles", "/articles/newly", "/articles/best",
                             "/articles/monthly", "/articles/weekly").permitAll()
-                    .antMatchers("/members/**").permitAll() // 관리자만 접근 가능하도록 수정해야한다.
                     .antMatchers("/api/**").permitAll() // API 관리를 따로 해주어야 한다.
                     .anyRequest().authenticated()
                     .and()
@@ -56,7 +58,13 @@ public class SecurityConfig {
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID", "remember-me").permitAll()
         ;
-
         return http.build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring().antMatchers(
+                "/", "/css/**", "/js/**", "/images/**", "/img/**",
+                "/*.ico", "/error/**", "/static/**", "/resources/**");
     }
 }

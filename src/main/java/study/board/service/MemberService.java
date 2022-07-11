@@ -82,4 +82,16 @@ public class MemberService {
         Optional<Member> member = memberRepository.findById(memberId);
         member.ifPresent(memberRepository::delete);
     }
+
+    public boolean validateLoginId(String loginId) {
+        return loginId.matches("^\\w{8,20}$");
+    }
+
+    public boolean validatePassword(String password) {
+        String regex =
+                "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,10}$";
+        String samePw = "(\\w)\\1\\1";
+
+        return !password.isBlank() && password.matches(regex) && !password.matches(samePw);
+    }
 }

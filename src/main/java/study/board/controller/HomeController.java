@@ -29,12 +29,11 @@ public class HomeController {
         }
         String loginId = (String) request.getSession(false).getAttribute(LOGIN_MEMBER);
         if(loginId == null) {
-            log.info("로그인 실패 - 로그인 정보 없음");
             return "home";
         }
         Optional<Member> member = memberRepository.findByLoginId(loginId);
         if(member.isEmpty()){
-            log.info("로그인 실패 - 로그인 정보 매칭 안됨");
+            request.getSession(false).invalidate();
             return "home";
         }
 
